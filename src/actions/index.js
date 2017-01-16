@@ -9,14 +9,32 @@ const API_KEY = process.env.REACT_APP_API_KEY
 const MAIN_URL = 'https://api.themoviedb.org/3'
 
 
+const fetchGenre = () => {
+  return dispatch => {
+    axios.get(`${MAIN_URL}/genre/movie/list?api_key=${API_KEY}`)
+      .then(response => {
+        if (response.status === 200) {
+          dispatch({
+            type: 'FETCH_GENRE',
+            payload: response.data
+          })
+        }
+      })
+  }
+}
+
+
 export const fetchPopularMovies = (page = 1) => {
   return dispatch => {
     axios.get(`${MAIN_URL}/movie/popular?api_key=${API_KEY}&page=${page}`)
       .then(response => {
-        dispatch({
-          type: FETCH_SUCCESS,
-          payload: response.data
-        })
+        if (response.status === 200) {
+          dispatch({
+            type: FETCH_SUCCESS,
+            payload: response.data
+          })
+          dispatch(fetchGenre())
+        }
       })
       .catch(err => {
         dispatch({
@@ -33,10 +51,12 @@ export const fetchMovieById = (id) => {
   return dispatch => {
     axios.get(`${MAIN_URL}/movie/${id}?api_key=${API_KEY}`)
       .then(response => {
+        if (response.status === 200) {
         dispatch({
           type: FETCH_MOVIE,
           payload: response.data
         })
+        }
       })
   }
 }

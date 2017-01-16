@@ -17,7 +17,7 @@ class MovieList extends Component {
   }
 
   render() {
-    const {movies, page} = this.props
+    const {movies, genres, page} = this.props
 
     let nextPage = page ? `${parseInt(page, 10) + 1}` : `${movies.page + 1}`
     const prevPage = movies.page > 1 ? `${parseInt(page, 10) - 1}` : ''
@@ -33,7 +33,22 @@ class MovieList extends Component {
         return <h2>Loading...</h2>
       }
 
+
       return movies.results.map(movie => {
+        if (!Array.isArray(genres)) {
+          const movieGenreIds = movie.genre_ids
+          
+          const movieGenreNames = movieGenreIds.map(genre_id => {
+            return genres.genres.find(genre => {
+             return genre.id === genre_id
+            }).name
+          })
+          const mappedMovie = movie
+          mappedMovie.movieGenreNames = movieGenreNames.join(', ')
+
+        }
+        
+
         return (
           <MovieCard key={movie.id} {...movie} page={page} />
         )
@@ -60,7 +75,8 @@ class MovieList extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    movies: state.movies.allMovies
+    movies: state.movies.allMovies,
+    genres: state.movies.genres
   }
 }
 

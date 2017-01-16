@@ -3,7 +3,7 @@
 import * as atypes from '../actions/actionTypes';
 
 
-const INITIAL_STATE = { allMovies: [], movie: null }
+const INITIAL_STATE = { allMovies: [], genres: [], movie: null }
 
 export const movieAPIReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
@@ -11,6 +11,8 @@ export const movieAPIReducer = (state = INITIAL_STATE, action) => {
       return { ...state, movie: action.payload}
     case atypes.FETCH_SUCCESS:
       return { ...state, allMovies: action.payload }
+    case 'FETCH_GENRE':
+      return {...state, genres: action.payload}
     default:
       return state
   }

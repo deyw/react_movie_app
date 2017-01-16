@@ -5,7 +5,7 @@ import './MovieCard.css'
 
 export default class MovieCard extends Component {
   render() {
-    const {id, title, poster_path} = this.props
+    const {id, title, poster_path, movieGenreNames} = this.props
     const poster_url = poster_path !== null ? `https://image.tmdb.org/t/p/w300/${poster_path}` : '/img/no_image.png'
     const movie_detail_path = `/movie/${id}`
     return (
@@ -19,6 +19,7 @@ export default class MovieCard extends Component {
         <div className="movie_card_description">
           {title}
         </div>
+        <small>{movieGenreNames}</small>
         </Link>
       </div>
       
