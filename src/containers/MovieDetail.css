@@ -1,0 +1,38 @@
+.hero_img {
+  display: flex;
+  height: 100vh;
+  background-size: cover;
+}
+
+.hero_img h1 {
+  font-size: 3rem;
+  margin: 15px 0
+}
+
+.flex-container {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  height: 100vh;
+  align-items: flex-end;
+  padding: 0 35px 60px 35px;
+  align-content: flex-end;
+}
+
+.item {
+  flex: 1 100%
+}
+
+.item_back {
+  flex: 1 100%;
+}
+ 
+.item p {
+  font-size: 18px;
+}
+
+

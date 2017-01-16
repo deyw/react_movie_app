@@ -1,0 +1,47 @@
+.header  {
+  display: flex;
+  justify-content: space-between;
+  padding: 3px 10px;
+  background: rgba(0, 0, 0, 0.9);
+  position: fixed;
+  width: 100%;
+  z-index: 9999
+}
+
+.header_section {
+  display: flex;
+  align-items: center;
+}
+
+.header_item {
+  padding: 8px 20px;
+  font-size: 18px;
+  font-weight: 400;
+}
+
+.header_item  a {
+  text-decoration: none
+}
+
+.header_item + .header_item {
+  margin-left: 5px
+}
+
+.header_item.active {
+  color: white;
+  background-color: #212529;
+  border-radius: 4px
+}
+
+.headerLogo {
+  font-size: 20px;
+  font-weight: 400;
+  color: white;
+  text-decoration: none;
+}
+
+.headerButton {
+  cursor: pointer;
+  color: #adb5bd;
+  text-decoration: none;
+}

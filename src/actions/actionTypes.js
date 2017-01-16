@@ -1,0 +1,6 @@
+
+// Constants
+export const FETCH_ALL_MOVIES = 'FETCH_ALL_MOVIES'
+export const FETCH_MOVIE = 'FETCH_MOVIE'
+export const SEARCH_MOVIE_TEXT = 'SEARCH_MOVIE_TEXT'
+export const FETCH_SUCCESS = 'FETCH_SUCCESS'
