@@ -35,19 +35,26 @@ class MovieList extends Component {
 
 
       return movies.results.map(movie => {
+     
         if (!Array.isArray(genres)) {
           const movieGenreIds = movie.genre_ids
-          
           const movieGenreNames = movieGenreIds.map(genre_id => {
-            return genres.genres.find(genre => {
-             return genre.id === genre_id
-            }).name
+            if (movieGenreIds.length > 0) {
+              const temp = genres.genres.find(genre => {
+                return genre.id === genre_id
+              });
+              return temp && temp.name
+            } else {
+              return 'No genre'
+            }
           })
+
           const mappedMovie = movie
-          mappedMovie.movieGenreNames = movieGenreNames.join(', ')
+          mappedMovie.movieGenreNames = movieGenreNames
+            .filter(genre => genre !== null && genre !== undefined && genre !== '')
+            .join(', ') 
 
         }
-        
 
         return (
           <MovieCard key={movie.id} {...movie} page={page} />
@@ -64,7 +71,7 @@ class MovieList extends Component {
         <hr />
         <p>Simple pagination</p>
         <p style={{ fontWeight: '600', color: '#454545' }}>Current Page: {movies.page}</p>
-        <Link disabled={!page || page === 1} className='bttn-bordered bttn-sm bttn-primary' activeClassName='active' to={ !page ? '' : '/'}>First Page</Link>
+        <Link disabled={!page || page === 1} className='bttn-bordered bttn-sm bttn-primary' activeClassName='active' to={!page ? '' : '/'}>First Page</Link>
         <Link className='bttn-bordered bttn-sm bttn-primary' activeClassName='active' to={nextPage}>Next</Link>
         <Link className='bttn-bordered bttn-sm bttn-primary' activeClassName='active' to={prevPage}>Prev</Link>
         <Link className='bttn-bordered bttn-sm bttn-primary' activeClassName='active' to={lastPage}>Last Page</Link>
