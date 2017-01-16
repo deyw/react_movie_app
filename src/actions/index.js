@@ -62,14 +62,15 @@ export const fetchMovieById = (id) => {
 }
 
 // search movie
-export const searchMovie = (searchText) => {
+export const searchMovie = (searchText, page = 1) => {
   return dispatch => {
-    axios.get(`${MAIN_URL}/search/movie?api_key=${API_KEY}&query=${searchText}&sort_by=popularity.desc`)
+    axios.get(`${MAIN_URL}/search/movie?api_key=${API_KEY}&query=${searchText}&page=${page}`)
       .then(response => {
         if (response.data) {
           dispatch({
             type: FETCH_SUCCESS,
-            payload: response.data
+            payload: response.data,
+            searchText
           })
         }
       })

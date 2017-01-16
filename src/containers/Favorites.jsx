@@ -17,7 +17,9 @@ class Favorites extends Component {
     const renderFavoriteMovies = () => {
 
       return movies.map(item => {
-        const poster_url = item.poster_path !== null ? `https://image.tmdb.org/t/p/w300/${item.poster_path}` : '/img/no_image.png'
+        const poster_url = item.poster_path !== null 
+          ? `https://image.tmdb.org/t/p/w300/${item.poster_path}` 
+          : '/img/no_image.png'
         const movie_detail_path = `/movie/${item.id}`
         return (
           <div className="movieCard" key={item.id}>

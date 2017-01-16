@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { browserHistory } from 'react-router';
 import debounce from 'lodash/debounce';
 import { fetchPopularMovies, searchMovie } from '../actions';
 import './MovieSearch.css'
@@ -8,9 +9,8 @@ class MovieSearch extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      searchText: ''
+      searchText: '',
     }
-     
   }
 
 
@@ -30,10 +30,10 @@ class MovieSearch extends Component {
     })
     if (this.state.searchText.length > 1) {
       this.handleSearchDebounced();
+      browserHistory.replace('/')
     } else {
       this.props.fetchPopularMovies()
     }
-    
   }
 
   render() {
