@@ -6,39 +6,38 @@ import {removeMovie} from '../actions';
 class Favorites extends Component {
 
   onRemoveMovie(item) {
-    let moviesStorageString = localStorage.getItem('movies')
-    let moviesStorage = JSON.parse(moviesStorageString)
-    const newArr = moviesStorage.filter(value => value.id !== item.id)
-    localStorage.setItem('movies', JSON.stringify(newArr))
-    this.props.removeMovie(item)
+    let moviesStorageString = localStorage.getItem('movies');
+    let moviesStorage = JSON.parse(moviesStorageString);
+    const newArr = moviesStorage.filter(value => value.id !== item.id);
+    localStorage.setItem('movies', JSON.stringify(newArr));
+    this.props.removeMovie(item);
   }
 
   render() {
-    const { movies } = this.props
+    const { movies } = this.props;
     if (!movies || movies.length === 0) {
       return (
         <div className='container'>
           <h2>No Favorite Movies</h2>
         </div>
-      )
+      );
     }
 
     const renderFavoriteMovies = () => {
-
       return movies.map(item => {
         const poster_url = item.poster_path !== null 
           ? `https://image.tmdb.org/t/p/w300/${item.poster_path}` 
-          : '/img/no_image.png'
-        const movie_detail_path = `/movie/${item.id}`
+          : '/img/no_image.png';
+        const movie_detail_path = `/movie/${item.id}`;
         return (
           <div className="movieCard" key={item.id}>
             <Link to={movie_detail_path}>
               <img
                 src={poster_url}
                 alt={item.title}
-                className='movie_card_img'
+                className='movieCardImage'
                 style={{ width: '100%' }} />
-              <div className="movie_card_description">
+              <div className="movieCardDescription">
                 {item.title}
               </div>
             </Link>
@@ -48,9 +47,8 @@ class Favorites extends Component {
               Remove from favorites
             </button>
           </div>
-
-        )
-      })
+        );
+      });
     }
 
     return (
@@ -63,7 +61,7 @@ class Favorites extends Component {
           </div>
         </section>
       </div>
-    )
+    );
   }
 }
 
@@ -73,4 +71,4 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps, {removeMovie})(Favorites)
+export default connect(mapStateToProps, {removeMovie})(Favorites);

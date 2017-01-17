@@ -4,6 +4,13 @@
   padding-top: 40px;
 }
 
+.mainSection {
+  width: 100%;
+  background: #FFFFFF;
+  border-bottom: 1px solid #dddddd; 
+  margin-bottom: 60px;
+}
+
 .cards {
   display: -webkit-flex;
   display: flex;

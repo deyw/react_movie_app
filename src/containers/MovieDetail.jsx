@@ -1,91 +1,86 @@
-import React, { Component } from 'react'
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
+import React, { Component } from 'react';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
-import { browserHistory } from 'react-router'
+import { browserHistory } from 'react-router';
 
 import MovieCard from '../components/MovieCard';
-import { fetchMovieById, addMovie } from '../actions'
-import './MovieDetail.css'
+import { fetchMovieById, addMovie } from '../actions';
+import './MovieDetail.css';
 
 class MovieDetail extends Component {
 
-
   handleSubmit() {
-    const { id, title, poster_path } = this.props.movie
-    this.props.addMovie({ id, title, poster_path })
+    const { id, title, poster_path } = this.props.movie;
+    this.props.addMovie({ id, title, poster_path });
   }
 
-  componentDidUpdate() {
-    ReactDOM.findDOMNode(this).scrollIntoView(true, 'smooth')
-  }
 
   componentDidMount() {
-    this.props.fetchMovieById(this.props.params.id)
+    this.props.fetchMovieById(this.props.params.id);
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.params.id !== this.props.params.id) {
-      this.props.fetchMovieById(nextProps.params.id)
+      this.props.fetchMovieById(nextProps.params.id);
+      ReactDOM.findDOMNode(this).scrollIntoView(true, 'smooth');
     }
   }
 
   render() {
-    const { movie, similarMovies, genres, favoriteMovie } = this.props
+    const { movie, similarMovies, genres, favoriteMovie } = this.props;
 
     const renderMovies = () => {
       if (similarMovies.length === 0) {
-        return <h2>Loading...</h2>
+        return <h2>Loading...</h2>;
       }
 
       return similarMovies.results.map(movie => {
-
         if (!Array.isArray(genres)) {
-          const movieGenreIds = movie.genre_ids
+          const movieGenreIds = movie.genre_ids;
           const movieGenreNames = movieGenreIds.map(genre_id => {
             if (movieGenreIds.length > 0) {
               const temp = genres.genres.find(genre => {
-                return genre.id === genre_id
-              });
-              return temp && temp.name
+                return genre.id === genre_id;
+              })
+              return temp && temp.name;
             } else {
-              return 'No genre'
+              return 'No genre';
             }
-          })
+          });
 
-          const mappedMovie = movie
+          const mappedMovie = movie;
           mappedMovie.movieGenreNames = movieGenreNames
             .filter(genre => genre !== null && genre !== undefined && genre !== '')
-            .join(', ')
+            .join(', ');
         }
 
         return (
           <MovieCard colorText='#ddd' key={movie.id} {...movie} />
-        )
-      })
+        );
+      });
     }
-
 
     if (!movie) {
       return (
         <div>
-          <h2>Loading...</h2>
+          <h2>Loading...</h2>;
         </div>
-      )
+      );
     }
 
+    const favoriteMovieIds = favoriteMovie.map(item => item.id);
+    const isFav = favoriteMovieIds.indexOf(movie.id) > -1;
 
-    const favoriteMovieIds = favoriteMovie.map(item => item.id)
-    const isFav = favoriteMovieIds.indexOf(movie.id) > -1
+    let text = isFav ? 'In Favorites :)' : 'Add to favorites';
 
-    let text = isFav ? 'In Favorites :)' : 'Add to favorites'
-
-    const backdropPath = `https://image.tmdb.org/t/p/w1280/${movie.backdrop_path}`
-    const poster_url = movie.poster_path !== null ? `https://image.tmdb.org/t/p/w300/${movie.poster_path}` : '/img/no_image.png'
+    const backdropPath = `https://image.tmdb.org/t/p/w1280/${movie.backdrop_path}`;
+    const poster_url = movie.poster_path !== null 
+      ? `https://image.tmdb.org/t/p/w300/${movie.poster_path}` 
+      : '/img/no_image.png';
     
     return (
       <div>
-
         <ReactCSSTransitionGroup
           key={'1'}
           transitionName="example"
@@ -93,41 +88,40 @@ class MovieDetail extends Component {
           transitionAppearTimeout={500}
           transitionEnter={false}
           transitionLeave={false}>
-          <div className='hero_img'
-            style={{
-              backgroundImage: `linear-gradient(
-              rgba(0, 0, 0, 0.05), 
-              rgb(20, 20, 20)
-            ), url(${backdropPath})`, color: '#ffffff'
-            }}>
-
-            <div className="flex-container">
-              <div className="movieCard detail" style={{ textAlign: 'left' }}>
-                <img
-                  src={poster_url}
-                  alt={movie.title}
-                  className='movie_card_img'
-                  style={{ width: '100%' }} />
-                <span style={{ padding: '5px 3px' }}>
-                  <button
-                    type='button'
-                    disabled={isFav}
-                    className="bttn-bordered bttn-sm bttn-primary"
-                    onClick={this.handleSubmit.bind(this)}>{text}
-                  </button>
-                </span>
-              </div>
-              <div className="item">
-                <h1>{movie.title} </h1>
-              </div>
-              <div className="item">
-                <p>{movie.overview}</p>
-              </div>
-              <div className="item_back">
-                <button className="bttn-bordered bttn-xs bttn-default" onClick={browserHistory.goBack}>Go back</button>
+            <div className='hero_img'
+              style={{
+                backgroundImage: `linear-gradient(
+                rgba(0, 0, 0, 0.05), 
+                rgb(20, 20, 20)
+              ), url(${backdropPath})`, color: '#ffffff'
+              }}>
+              <div className="flex-container">
+                <div className="movieCard detail" style={{ textAlign: 'left' }}>
+                  <img
+                    src={poster_url}
+                    alt={movie.title}
+                    className='movieCardImage'
+                    style={{ width: '100%' }} />
+                  <span style={{ padding: '5px 3px' }}>
+                    <button
+                      type='button'
+                      disabled={isFav}
+                      className="bttn-bordered bttn-sm bttn-primary"
+                      onClick={this.handleSubmit.bind(this)}>{text}
+                    </button>
+                  </span>
+                </div>
+                <div className="item">
+                  <h1>{movie.title} </h1>
+                </div>
+                <div className="item">
+                  <p>{movie.overview}</p>
+                </div>
+                <div className="item_back">
+                  <button className="bttn-bordered bttn-xs bttn-default" onClick={browserHistory.goBack}>Go back</button>
+                </div>
               </div>
             </div>
-          </div>
         </ ReactCSSTransitionGroup>
 
         <div className="container">
@@ -145,10 +139,10 @@ class MovieDetail extends Component {
 const mapStateToProps = state => {
   return {
     movie: state.movies.movie,
-    similarMovies: state.movies.similar,
+    similarMovies: state.movies.allMovies,
     favoriteMovie: state.favoriteMovies,
     genres: state.movies.genres,
   }
 }
 
-export default connect(mapStateToProps, { fetchMovieById, addMovie })(MovieDetail)
+export default connect(mapStateToProps, { fetchMovieById, addMovie })(MovieDetail);

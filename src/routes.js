@@ -12,6 +12,5 @@ export default (
     <Route path='/favorites' component={Favorites} />
     <Route path='/:page' component={Movies} />
     <Route path='/movie/:id' component={MovieDetail} />
-    
   </Route>
-)
+);

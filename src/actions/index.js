@@ -1,83 +1,58 @@
-
 import axios from 'axios';
 import {
   FETCH_SUCCESS,
   FETCH_MOVIE,
-} from './actionTypes'
+  FETCH_GENRE,
+  ADD_MOVIE,
+  ADD_MOVIES,
+  REMOVE_MOVIE
+} from './actionTypes';
 
-const API_KEY = process.env.REACT_APP_API_KEY 
-const MAIN_URL = 'https://api.themoviedb.org/3'
+const API_KEY = process.env.REACT_APP_API_KEY;
+const MAIN_URL = 'https://api.themoviedb.org/3';
 
-
-const fetchGenre = () => {
+const dispatcher = (path, type, shouldDispatchGenre, shouldDispatchSimilar, method = 'get') => {
   return dispatch => {
-    axios.get(`${MAIN_URL}/genre/movie/list?api_key=${API_KEY}`)
-      .then(response => {
+    axios[method](path).then(response => {
         if (response.status === 200) {
           dispatch({
-            type: 'FETCH_GENRE',
-            payload: response.data
+            type,
+            payload: response.data,
           })
+          
+          if (shouldDispatchGenre) {
+            dispatch(fetchGenre())
+          }
+
+          if (shouldDispatchSimilar) {
+            dispatch(fetchSimilarMovies(response.data.id))
+          }
         }
       })
+      .catch()
   }
 }
 
-const fetchSimilarMovies = (id) => {
-  return dispatch => {
-    axios.get(`${MAIN_URL}/movie/${id}/similar?api_key=${API_KEY}`)
-      .then(response => {
-        dispatch({
-          type: 'FETCH_SIMILAR',
-          payload: response.data
-        })
-        dispatch(fetchGenre())
-      })
-  }
+function fetchGenre () {
+  const api_path = `${MAIN_URL}/genre/movie/list?api_key=${API_KEY}`;
+  return dispatcher(api_path, FETCH_GENRE, false, false);
 }
 
+function fetchSimilarMovies (id) {
+  const api_path = `${MAIN_URL}/movie/${id}/similar?api_key=${API_KEY}`;
+  return dispatcher(api_path, FETCH_SUCCESS, true, false);
+}
 
 export const fetchPopularMovies = (page = 1) => {
-  return dispatch => {
-    axios.get(`${MAIN_URL}/movie/popular?api_key=${API_KEY}&page=${page}`)
-      .then(response => {
-        if (response.status === 200) {
-          dispatch({
-            type: FETCH_SUCCESS,
-            payload: response.data
-          })
-          dispatch(fetchGenre())
-        }
-      })
-      .catch(err => {
-        dispatch({
-          type: 'FETCH_ERROR',
-          err
-        })
-      })
-  }
+  const api_path = `${MAIN_URL}/movie/popular?api_key=${API_KEY}&page=${page}`;
+  return dispatcher(api_path, FETCH_SUCCESS, true);
 }
 
-
-// fetch movie by id
 export const fetchMovieById = (id) => {
-  return dispatch => {
-    axios.get(`${MAIN_URL}/movie/${id}?api_key=${API_KEY}`)
-      .then(response => {
-        if (response.status === 200) {
-        dispatch({
-          type: FETCH_MOVIE,
-          payload: response.data
-        })
-        dispatch(fetchSimilarMovies(response.data.id))
-        } else {
-          dispatch({
-            type: 'FETCH_ERROR',
-          })
-        }
-      })
-  }
+  const api_path = `${MAIN_URL}/movie/${id}?api_key=${API_KEY}`;
+  return dispatcher(api_path, FETCH_MOVIE, false, true);
 }
+
 
 // search movie
 export const searchMovie = (searchText, page = 1) => {
@@ -89,35 +64,35 @@ export const searchMovie = (searchText, page = 1) => {
             type: FETCH_SUCCESS,
             payload: response.data,
             searchText
-          })
+          });
         }
       })
       .catch(err => {
         dispatch({
           type: 'FETCH_ERROR',
           err
-        })
+        });
       })
   }
 }
 
 export const addMovie = (movie) => {
   return {
-    type: 'ADD_MOVIE',
+    type: ADD_MOVIE,
     payload: movie
   }
 }
 
 export const removeMovie = (movie) => {
   return {
-    type: 'REMOVE_MOVIE',
+    type: REMOVE_MOVIE,
     payload: movie
   }
 }
 
 export const addMovies = (movies) => {
   return {
-    type: 'ADD_MOVIES',
+    type: ADD_MOVIES,
     movies
   }
 }

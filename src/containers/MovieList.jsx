@@ -7,46 +7,46 @@ import Paginator from '../components/Paginator';
 class MovieList extends Component {
 
   componentDidMount() {
-    this.props.fetchPopularMovies(this.props.page)
+    this.props.fetchPopularMovies(this.props.page);
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.page !== this.props.page) {
       if (this.props.searchText) {
-        this.props.searchMovie(this.props.searchText, nextProps.page)
+        this.props.searchMovie(this.props.searchText, nextProps.page);
       } else {
-        this.props.fetchPopularMovies(nextProps.page)
+        this.props.fetchPopularMovies(nextProps.page);
       }
     }
   }
 
   render() {
-    const {movies, genres, page} = this.props
+    const {movies, genres, page} = this.props;
 
     const renderMovies = () => {
       if (movies.length === 0) {
-        return <h2>Loading...</h2>
+        return <h2>Loading...</h2>;
       }
 
       return movies.results.map(movie => {
 
         if (!Array.isArray(genres)) {
-          const movieGenreIds = movie.genre_ids
+          const movieGenreIds = movie.genre_ids;
           const movieGenreNames = movieGenreIds.map(genre_id => {
             if (movieGenreIds.length > 0) {
               const temp = genres.genres.find(genre => {
-                return genre.id === genre_id
+                return genre.id === genre_id;
               });
-              return temp && temp.name
+              return temp && temp.name;
             } else {
-              return 'No genre'
+              return 'No genre';
             }
           })
 
-          const mappedMovie = movie
+          const mappedMovie = movie;
           mappedMovie.movieGenreNames = movieGenreNames
             .filter(genre => genre !== null && genre !== undefined && genre !== '')
-            .join(', ')
+            .join(', ');
         }
 
         return (
@@ -66,7 +66,7 @@ class MovieList extends Component {
         <Paginator url={page} {...movies} />
 
       </div>
-    )
+    );
   }
 }
 
@@ -78,4 +78,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, { fetchPopularMovies, searchMovie })(MovieList)
+export default connect(mapStateToProps, { fetchPopularMovies, searchMovie })(MovieList);

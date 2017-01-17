@@ -3,13 +3,13 @@ import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 import debounce from 'lodash/debounce';
 import { fetchPopularMovies, searchMovie } from '../actions';
-import './MovieSearch.css'
+import './MovieSearch.css';
 
 class MovieSearch extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
-      searchText: '',
+      searchText: ''
     }
   }
 
@@ -27,12 +27,12 @@ class MovieSearch extends Component {
   onInputChange(e) {
     this.setState({
       searchText: e.target.value
-    })
+    });
     if (this.state.searchText.length > 1) {
       this.handleSearchDebounced();
-      browserHistory.replace('/')
+      browserHistory.replace('/');
     } else {
-      this.props.fetchPopularMovies()
+      this.props.fetchPopularMovies();
     }
   }
 
@@ -52,4 +52,4 @@ class MovieSearch extends Component {
 }
 
 
-export default connect(null, { searchMovie, fetchPopularMovies })(MovieSearch)
+export default connect(null, { searchMovie, fetchPopularMovies })(MovieSearch);

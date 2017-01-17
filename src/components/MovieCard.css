@@ -49,12 +49,12 @@
   
 }
 
-.movie_card_img {
+.movieCardImage {
   border-radius: 3px;
   display: block;
 }
 
-.movie_card_description {
+.movieCardDescription {
   -webkit-box-flex: 1;
   flex: 1 1 auto;
   padding: 4px;
