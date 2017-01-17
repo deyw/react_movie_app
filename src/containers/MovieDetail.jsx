@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router'
 
@@ -14,6 +15,9 @@ class MovieDetail extends Component {
     this.props.addMovie({ id, title, poster_path })
   }
 
+  componentDidUpdate() {
+    ReactDOM.findDOMNode(this).scrollIntoView()
+  }
 
   componentDidMount() {
     this.props.fetchMovieById(this.props.params.id)
