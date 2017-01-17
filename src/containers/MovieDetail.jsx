@@ -97,7 +97,7 @@ class MovieDetail extends Component {
             style={{
               backgroundImage: `linear-gradient(
               rgba(0, 0, 0, 0.05), 
-              rgba(0, 0, 0, 0.95)
+              rgb(20, 20, 20)
             ), url(${backdropPath})`, color: '#ffffff'
             }}>
 
