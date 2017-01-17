@@ -23,6 +23,18 @@ const fetchGenre = () => {
   }
 }
 
+const fetchSimilarMovies = (id) => {
+  return dispatch => {
+    axios.get(`${MAIN_URL}/movie/${id}/similar?api_key=${API_KEY}`)
+      .then(response => {
+        dispatch({
+          type: 'FETCH_SIMILAR',
+          payload: response.data
+        })
+      })
+  }
+}
+
 
 export const fetchPopularMovies = (page = 1) => {
   return dispatch => {
@@ -56,6 +68,11 @@ export const fetchMovieById = (id) => {
           type: FETCH_MOVIE,
           payload: response.data
         })
+        dispatch(fetchSimilarMovies(response.data.id))
+        } else {
+          dispatch({
+            type: 'FETCH_ERROR',
+          })
         }
       })
   }

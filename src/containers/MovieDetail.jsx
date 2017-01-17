@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router'
 
+import MovieCard from '../components/MovieCard';
 import { fetchMovieById, addMovie } from '../actions'
 import './MovieDetail.css'
 
@@ -18,9 +19,47 @@ class MovieDetail extends Component {
     this.props.fetchMovieById(this.props.params.id)
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.params.id !== this.props.params.id) {
+      this.props.fetchMovieById(nextProps.params.id)
+    }
+  }
+
   render() {
-    const { movie, favoriteMovie } = this.props
-    
+    const { movie, similarMovies, genres, favoriteMovie } = this.props
+
+    const renderMovies = () => {
+      if (similarMovies.length === 0) {
+        return <h2>Loading...</h2>
+      }
+
+      return similarMovies.results.map(movie => {
+
+        if (!Array.isArray(genres)) {
+          const movieGenreIds = movie.genre_ids
+          const movieGenreNames = movieGenreIds.map(genre_id => {
+            if (movieGenreIds.length > 0) {
+              const temp = genres.genres.find(genre => {
+                return genre.id === genre_id
+              });
+              return temp && temp.name
+            } else {
+              return 'No genre'
+            }
+          })
+
+          const mappedMovie = movie
+          mappedMovie.movieGenreNames = movieGenreNames
+            .filter(genre => genre !== null && genre !== undefined && genre !== '')
+            .join(', ')
+        }
+
+        return (
+          <MovieCard key={movie.id} {...movie}  />
+        )
+      })
+    }
+
 
     if (!movie) {
       return (
@@ -32,8 +71,8 @@ class MovieDetail extends Component {
 
 
     const favoriteMovieIds = favoriteMovie.map(item => item.id)
-    const isFav =  favoriteMovieIds.indexOf(movie.id) > -1 
-    
+    const isFav = favoriteMovieIds.indexOf(movie.id) > -1
+
     let text = isFav ? 'In Favorites :)' : 'Add to favorites'
 
     const backdropPath = `https://image.tmdb.org/t/p/w1280/${movie.backdrop_path}`
@@ -56,12 +95,12 @@ class MovieDetail extends Component {
                 alt={movie.title}
                 className='movie_card_img'
                 style={{ width: '100%' }} />
-              <span style={{ padding: '5px 3px' }}> 
-                <button 
-                type='button' 
-                disabled={isFav} 
-                className="bttn-bordered bttn-sm bttn-primary" 
-                onClick={this.handleSubmit.bind(this)}>{text}
+              <span style={{ padding: '5px 3px' }}>
+                <button
+                  type='button'
+                  disabled={isFav}
+                  className="bttn-bordered bttn-sm bttn-primary"
+                  onClick={this.handleSubmit.bind(this)}>{text}
                 </button>
               </span>
             </div>
@@ -76,6 +115,13 @@ class MovieDetail extends Component {
             </div>
           </div>
         </div>
+        <div className="container">
+          <h2 style={{ color: '#ededed' }}>You may also like</h2>
+          <div className="cards">
+                    {renderMovies()}
+          </div>
+
+        </div>
       </div>
     )
   }
@@ -84,7 +130,9 @@ class MovieDetail extends Component {
 const mapStateToProps = state => {
   return {
     movie: state.movies.movie,
-    favoriteMovie: state.favoriteMovies
+    similarMovies: state.movies.similar,
+    favoriteMovie: state.favoriteMovies,
+    genres: state.movies.genres,
   }
 }
 
