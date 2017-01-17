@@ -90,6 +90,13 @@ export const addMovie = (movie) => {
   }
 }
 
+export const removeMovie = (movie) => {
+  return {
+    type: 'REMOVE_MOVIE',
+    payload: movie
+  }
+}
+
 export const addMovies = (movies) => {
   return {
     type: 'ADD_MOVIES',

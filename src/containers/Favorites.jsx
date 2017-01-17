@@ -1,8 +1,17 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
+import {removeMovie} from '../actions';
 
 class Favorites extends Component {
+
+  onRemoveMovie(item) {
+    let moviesStorageString = localStorage.getItem('movies')
+    let moviesStorage = JSON.parse(moviesStorageString)
+    const newArr = moviesStorage.filter(value => value.id !== item.id)
+    localStorage.setItem('movies', JSON.stringify(newArr))
+    this.props.removeMovie(item)
+  }
 
   render() {
     const { movies } = this.props
@@ -33,6 +42,11 @@ class Favorites extends Component {
                 {item.title}
               </div>
             </Link>
+            <button 
+              className='bttn-bordered bttn-xs bttn-danger' 
+              onClick={this.onRemoveMovie.bind(this, item)}>
+              Remove from favorites
+            </button>
           </div>
 
         )
@@ -59,4 +73,4 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps)(Favorites)
+export default connect(mapStateToProps, {removeMovie})(Favorites)

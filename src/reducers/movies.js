@@ -24,6 +24,9 @@ export const movieFavoriteReducer = (state = [], action) => {
       return [
         ...state, action.payload
       ]
+    case 'REMOVE_MOVIE':
+    const movieId = action.payload.id
+      return state.filter(movie => movie.id !== movieId )
     case 'ADD_MOVIES':
       return [
         ...state,
