@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router'
@@ -16,7 +17,7 @@ class MovieDetail extends Component {
   }
 
   componentDidUpdate() {
-    ReactDOM.findDOMNode(this).scrollIntoView()
+    ReactDOM.findDOMNode(this).scrollIntoView(true, 'smooth')
   }
 
   componentDidMount() {
@@ -59,7 +60,7 @@ class MovieDetail extends Component {
         }
 
         return (
-          <MovieCard colorText='#ddd' key={movie.id} {...movie}  />
+          <MovieCard colorText='#ddd' key={movie.id} {...movie} />
         )
       })
     }
@@ -81,51 +82,61 @@ class MovieDetail extends Component {
 
     const backdropPath = `https://image.tmdb.org/t/p/w1280/${movie.backdrop_path}`
     const poster_url = movie.poster_path !== null ? `https://image.tmdb.org/t/p/w300/${movie.poster_path}` : '/img/no_image.png'
+    
     return (
-      <div >
+      <div>
 
-        <div className='hero_img'
-          style={{
-            backgroundImage: `linear-gradient(
+        <ReactCSSTransitionGroup
+          key={'1'}
+          transitionName="example"
+          transitionAppear={true}
+          transitionAppearTimeout={500}
+          transitionEnter={false}
+          transitionLeave={false}>
+          <div className='hero_img'
+            style={{
+              backgroundImage: `linear-gradient(
               rgba(0, 0, 0, 0.05), 
               rgba(0, 0, 0, 0.95)
             ), url(${backdropPath})`, color: '#ffffff'
-          }}>
+            }}>
 
-          <div className="flex-container">
-            <div className="movieCard detail" style={{ textAlign: 'left' }}>
-              <img
-                src={poster_url}
-                alt={movie.title}
-                className='movie_card_img'
-                style={{ width: '100%' }} />
-              <span style={{ padding: '5px 3px' }}>
-                <button
-                  type='button'
-                  disabled={isFav}
-                  className="bttn-bordered bttn-sm bttn-primary"
-                  onClick={this.handleSubmit.bind(this)}>{text}
-                </button>
-              </span>
-            </div>
-            <div className="item">
-              <h1>{movie.title} </h1>
-            </div>
-            <div className="item">
-              <p>{movie.overview}</p>
-            </div>
-            <div className="item_back">
-              <button className="bttn-bordered bttn-xs bttn-default" onClick={browserHistory.goBack}>Go back</button>
+            <div className="flex-container">
+              <div className="movieCard detail" style={{ textAlign: 'left' }}>
+                <img
+                  src={poster_url}
+                  alt={movie.title}
+                  className='movie_card_img'
+                  style={{ width: '100%' }} />
+                <span style={{ padding: '5px 3px' }}>
+                  <button
+                    type='button'
+                    disabled={isFav}
+                    className="bttn-bordered bttn-sm bttn-primary"
+                    onClick={this.handleSubmit.bind(this)}>{text}
+                  </button>
+                </span>
+              </div>
+              <div className="item">
+                <h1>{movie.title} </h1>
+              </div>
+              <div className="item">
+                <p>{movie.overview}</p>
+              </div>
+              <div className="item_back">
+                <button className="bttn-bordered bttn-xs bttn-default" onClick={browserHistory.goBack}>Go back</button>
+              </div>
             </div>
           </div>
-        </div>
+        </ ReactCSSTransitionGroup>
+
         <div className="container">
           <h2 style={{ color: '#ededed' }}>You may also like</h2>
           <div className="cards">
-                    {renderMovies()}
+            {renderMovies()}
           </div>
-
         </div>
+        
       </div>
     )
   }
