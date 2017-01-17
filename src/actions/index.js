@@ -31,6 +31,7 @@ const fetchSimilarMovies = (id) => {
           type: 'FETCH_SIMILAR',
           payload: response.data
         })
+        dispatch(fetchGenre())
       })
   }
 }

@@ -13,9 +13,10 @@ class MovieCard extends Component {
   }
 
   render() {
-    const {id, title, poster_path, movieGenreNames, favoriteMovie} = this.props
+    const {id, title, poster_path, movieGenreNames, favoriteMovie, colorText} = this.props
     const poster_url = poster_path !== null ? `https://image.tmdb.org/t/p/w300/${poster_path}` : '/img/no_image.png'
     const movie_detail_path = `/movie/${id}`
+    const tColor = colorText ? colorText : '#222'
     
     const favoriteMovieIds = favoriteMovie.map(item => item.id)
     const isFav =  favoriteMovieIds.indexOf(id) > -1 
@@ -29,10 +30,10 @@ class MovieCard extends Component {
           alt={title}
           className='movie_card_img'
           style={{ width: '100%' }} />
-        <div className="movie_card_description">
+        <div className="movie_card_description" style={{color: tColor}}>
           {title}
         </div>
-        <div style={{padding: '5px'}}><small>{movieGenreNames}</small></div>
+        <div style={{padding: '5px'}}><small style={{color: tColor}}>{movieGenreNames}</small></div>
         </Link>
         <button className="bttn-bordered bttn-xs bttn-primary" disabled={isFav} onClick={this.addToFavorite.bind(this)}>{text}</button>
       </div>

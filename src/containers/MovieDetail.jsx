@@ -55,7 +55,7 @@ class MovieDetail extends Component {
         }
 
         return (
-          <MovieCard key={movie.id} {...movie}  />
+          <MovieCard colorText='#ddd' key={movie.id} {...movie}  />
         )
       })
     }
