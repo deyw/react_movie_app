@@ -9,7 +9,9 @@ import { setMovies, getMovies } from './localStorage';
 import * as actions from './actions';
 
 import Routes from './routes';
+import './normalize.css';
 import './index.css';
+
 
 
 

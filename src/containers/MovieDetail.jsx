@@ -125,7 +125,7 @@ class MovieDetail extends Component {
         </ ReactCSSTransitionGroup>
 
         <div className="container">
-          <h2 style={{ color: '#ededed' }}>You may also like</h2>
+          <h2 style={{ color: '#ededed', paddingLeft: '15px' }}>You may also like</h2>
           <div className="cards">
             {renderMovies()}
           </div>
